@@ -42,7 +42,7 @@ class UserController extends Controller
             'class' => $request->class,
             'division' => $request->division,
         ]);
-        return redirect('register');
+        return redirect('login');
     }
 
 

@@ -86,4 +86,10 @@ class AuthController extends Controller
             'email' => 'Invalid email or password.',
         ])->withInput($request->only('email'));
     }
+    public function logout()
+
+    {
+        Auth::logout();
+        return redirect('login');
+    }
 }

@@ -53,7 +53,8 @@
 
             <div class="flex justify-between mt-8">
                 <button onclick="toggleEdit()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">Edit Profile</button>
-                <a href="#" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition duration-200">Logout</a>
+                <a href="/list" class="bg-indigo-800 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">show list</a>
+                <a href="/logout" class="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition duration-200">Logout</a>
             </div>
 
             <!-- Edit Form -->
@@ -97,22 +98,22 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div class="bg-green-50 p-4 rounded-lg shadow">
                     <strong class="text-gray-800">Mathematics:</strong>
-                    <p class="text-gray-600">{{ $user->mark->mathematics }}</p>
+                    <p class="text-gray-600">{{ $user->mark->mathematics??"not updated" }}</p>
                 </div>
 
                 <div class="bg-green-50 p-4 rounded-lg shadow">
                     <strong class="text-gray-800">Science:</strong>
-                    <p class="text-gray-600">{{ $user->mark->science }}</p>
+                    <p class="text-gray-600">{{ $user->mark->science??"not updated" }}</p>
                 </div>
 
                 <div class="bg-green-50 p-4 rounded-lg shadow">
                     <strong class="text-gray-800">English:</strong>
-                    <p class="text-gray-600">{{ $user->mark->english }}</p>
+                    <p class="text-gray-600">{{ $user->mark->english??"not updated" }}</p>
                 </div>
 
                 <div class="bg-green-50 p-4 rounded-lg shadow">
                     <strong class="text-gray-800">History:</strong>
-                    <p class="text-gray-600">{{ $user->mark->history }}</p>
+                    <p class="text-gray-600">{{ $user->mark->history??"not updated" }}</p>
                 </div>
             </div>
         </div>
