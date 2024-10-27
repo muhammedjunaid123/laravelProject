@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <title>User Profile</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="/css/app.css" rel="stylesheet"> <!-- Changed to a normal path -->
     <script>
         function toggleEdit() {
             document.getElementById('edit-form').classList.toggle('hidden');
@@ -87,12 +86,35 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-end mt-4">
-                        <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-200">Update</button>
+                    <div class="flex justify-end">
+                        <button type="submit" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition duration-200">Save Changes</button>
                     </div>
                 </form>
             </div>
 
+            <!-- Marks Section -->
+            <h2 class="text-3xl font-bold text-gray-800 mt-6 mb-4">Your Marks</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-green-50 p-4 rounded-lg shadow">
+                    <strong class="text-gray-800">Mathematics:</strong>
+                    <p class="text-gray-600">{{ $user->mark->mathematics }}</p>
+                </div>
+
+                <div class="bg-green-50 p-4 rounded-lg shadow">
+                    <strong class="text-gray-800">Science:</strong>
+                    <p class="text-gray-600">{{ $user->mark->science }}</p>
+                </div>
+
+                <div class="bg-green-50 p-4 rounded-lg shadow">
+                    <strong class="text-gray-800">English:</strong>
+                    <p class="text-gray-600">{{ $user->mark->english }}</p>
+                </div>
+
+                <div class="bg-green-50 p-4 rounded-lg shadow">
+                    <strong class="text-gray-800">History:</strong>
+                    <p class="text-gray-600">{{ $user->mark->history }}</p>
+                </div>
+            </div>
         </div>
     </div>
 
