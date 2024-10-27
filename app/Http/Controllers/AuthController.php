@@ -10,15 +10,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource (register).
      */
     public function create()
     {
@@ -26,70 +18,51 @@ class AuthController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Load the login form.
      */
-    public function store(Request $request)
-    {
-       
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
-    {
-        //
-    }
-
     public function loadLogin()
-
     {
         return view('login');
     }
 
+    /**
+     * Authenticate the user.
+     */
     public function authUser(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required'
         ]);
-        // Attempt to authenticate the user
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            return redirect('home');
+
+        try {
+            // Attempt to authenticate the user
+            if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+                return redirect('home');
+            }
+        } catch (\Exception $e) {
+            // Handle exception (e.g., log the error)
+            return back()->withErrors(['email' => 'An error occurred during authentication.'])->withInput($request->only('email'));
         }
+
         // If authentication fails, redirect back with an error
         return back()->withErrors([
             'email' => 'Invalid email or password.',
         ])->withInput($request->only('email'));
     }
-    public function logout()
 
+    /**
+     * Logout the user.
+     */
+    public function logout()
     {
-        Auth::logout();
+        try {
+            Auth::logout();
+        } catch (\Exception $e) {
+            // Handle exception (e.g., log the error)
+            return back()->withErrors(['logout' => 'An error occurred while logging out.']);
+        }
+
         return redirect('login');
     }
 }

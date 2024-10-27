@@ -14,14 +14,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $user = User::all();
-        return view('list', ['users' => $user]);
+        $users = User::all();
+        return view('list', ['users' => $users]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -35,16 +30,20 @@ class UserController extends Controller
             'class' => 'required|string|max:100',
             'division' => 'required|string|max:100',
         ]);
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'class' => $request->class,
-            'division' => $request->division,
-        ]);
-        return redirect('login');
-    }
 
+        try {
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'class' => $request->class,
+                'division' => $request->division,
+            ]);
+            return redirect('login')->with('success', 'User registered successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Failed to register user.'])->withInput();
+        }
+    }
 
     /**
      * Display the specified resource.
@@ -56,17 +55,9 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
         $id = Auth::id();
         $request->validate([
@@ -75,20 +66,16 @@ class UserController extends Controller
             'division' => 'required|string|max:100',
         ]);
 
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->division = $request->division;
-        $user->class = $request->class;
-        $user->save();
+        try {
+            $user = User::findOrFail($id);
+            $user->name = $request->name;
+            $user->division = $request->division;
+            $user->class = $request->class;
+            $user->save();
 
-        return redirect('home');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
-    {
-        //
+            return redirect('home')->with('success', 'User updated successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Failed to update user.'])->withInput();
+        }
     }
 }

@@ -9,14 +9,6 @@ use Illuminate\Http\Request;
 class MarkController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create($id)
@@ -35,32 +27,21 @@ class MarkController extends Controller
             'science' => 'required|integer|min:0|max:100',
             'english' => 'required|integer|min:0|max:100',
             'history' => 'required|integer|min:0|max:100',
+            'std_id' => 'required|exists:users,id' // Ensure std_id is valid
         ]);
 
-        Mark::create([
-            'mathematics' => $request['mathematics'],
-            'std_id' => $request['std_id'],
-            'science' =>  $request['science'],
-            'english' =>  $request['english'],
-            'history' =>  $request['history'],
-        ]);
-        return redirect('list');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Mark $mark)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Mark $mark)
-    {
-        //
+        try {
+            Mark::create([
+                'mathematics' => $request['mathematics'],
+                'std_id' => $request['std_id'],
+                'science' => $request['science'],
+                'english' => $request['english'],
+                'history' => $request['history'],
+            ]);
+            return redirect('list')->with('success', 'Marks added successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Failed to add marks.'])->withInput();
+        }
     }
 
     /**
@@ -73,24 +54,20 @@ class MarkController extends Controller
             'science' => 'required|integer|min:0|max:100',
             'english' => 'required|integer|min:0|max:100',
             'history' => 'required|integer|min:0|max:100',
+            'std_id' => 'required|exists:users,id' // Ensure std_id is valid
         ]);
-        $mark = Mark::find($request['id']);
 
-        $mark->mathematics = $request['mathematics'];
-        $mark->std_id = $request['std_id'];
-        $mark->science =  $request['science'];
-        $mark->english =  $request['english'];
-        $mark->history =  $request['history'];
-        $mark->save();
+        try {
+            $mark = Mark::find($request['id']);
 
-        return redirect('list');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Mark $mark)
-    {
-        //
+            $mark->mathematics = $request['mathematics'];
+            $mark->science =  $request['science'];
+            $mark->english =  $request['english'];
+            $mark->history =  $request['history'];
+            $mark->save();
+            return redirect('list')->with('success', 'Marks updated successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Failed to update marks.'])->withInput();
+        }
     }
 }
